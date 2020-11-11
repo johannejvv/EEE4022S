@@ -114,14 +114,7 @@ def segment_centr(a,b,segment):
             centr = np.append(centr, np.array([[0,0]]), axis=0)
             
             i=i+1
-        """
-        elif (a[i].any() == 0):
-            centr=np.append(centr, np.array([b[i]]), axis=0)
-            i=i+1
-        elif (b[i].any() == 0):
-            centr=np.append(centr, np.array([a[i]]), axis=0)
-            i=i+1
-        """
+      
         
     return (centr)
 
@@ -181,9 +174,6 @@ def body_CM():
     return COM
 
 COM = body_CM()
-#print("COM:", COM)
-# save to csv file
-#savetxt('P2_COM.csv', COM, delimiter=',')
 
 #smooth out the COM_y
 i=1
@@ -202,94 +192,14 @@ while(i< COM.shape[0]):
 #print(COM_smooth)
 savetxt('COM.csv', COM_smooth, delimiter=',')
 
-
-
-
-"""
-i=0
-COM_y = []
-COM_x =[]
-while (i<length):
-    #np.append(RWrist, np.array([X_[25*i + 4]]), axis=0)
-    COM_y = np.append( COM_y, COM_smooth[i][1])
-    COM_x = np.append( COM_x, COM_smooth[i][0])
-    i=i+1
-
-# definitions for the axes
-left, width = 0.1, 0.65
-bottom, height = 0.1, 0.65
-spacing = 0.03
-
-rect_scatter = [left, bottom, width, height]
-rect_histx = [left, bottom + height + spacing, width, 0.2]
-rect_histy = [left + width + spacing, bottom, 0.2, height]
-
-# start with a rectangular Figure
-plt.figure(figsize=(9, 9))
-
-ax_scatter = plt.axes(rect_scatter)
-plt.gca().invert_yaxis()
-plt.xlabel("x position [pixels]")
-plt.ylabel("y position [pixels]")
-
-ax_scatter.tick_params(direction='in', top=True, right=True)
-plt.xlim(850,1600)
-plt.ylim(3550,200)
-#ax_scatter.xaxis.set_major_locator(MaxNLocator(prune='both'))
-#ax_scatter.yaxis.set_major_locator(MaxNLocator(prune='both'))
-
-
-ax_histx = plt.axes(rect_histx)
-ax_histx.tick_params(direction='in', labelbottom=False)
-ax_histx.set_xlim(ax_scatter.get_xlim())
-ax_histx.set_yticklabels([])
-ax_histx.set_xticklabels([])
-#ax_histx.yaxis.set_major_locator(MaxNLocator(4, prune='both'))
-sns.distplot(COM_x, rug=False, hist=False, color='gray')
-
-ax_histy = plt.axes(rect_histy)
-ax_histy.tick_params(direction='in', labelleft=False)
-plt.gca().invert_yaxis()
-ax_histy.set_ylim(ax_scatter.get_ylim())
-ax_histy.set_yticklabels([])
-ax_histy.set_xticklabels([])
-#ax_histy.xaxis.set_major_locator(MaxNLocator(4, prune='both'))
-sns.distplot(COM_y, rug=False, hist=False, vertical=True, color='gray')
-
-# the scatter plot:
-for i in range(length):
-    ax_scatter.plot(int(COM_smooth[i][0]),int(COM_smooth[i][1]),color='gray', marker='.') 
-#ax_scatter.plot(COM_x, COM_y, color='orange', marker='.')
-
-
-#ax_histx.set_xlim(ax_scatter.get_xlim())
-#ax_histy.set_ylim(ax_scatter.get_ylim())
-plt.show()
-"""
-"""
-#print(COM_y)
 #Display COG on video
-subplot(2,2,4)
-ax = sns.distplot(COM_y, rug=False, hist=False, vertical=True )
-plt.gca().invert_yaxis()
-
-subplot(2,2,1)
-ax = sns.distplot(COM_x, rug=False, hist=False)
-
-subplot(2,2,3)
-ax = plt.plot(COM_x,COM_y, ".") 
-plt.gca().invert_yaxis()
-
-
-plt.show()
-"""
 
 out = cv2.VideoWriter(
     'output.mp4',
    cv2.VideoWriter_fourcc(*'mp4v'),
     30.0,
     (540,960))
-"""
+
 i=0
 while True:
     success, frame = cap.read()
@@ -301,12 +211,8 @@ while True:
         height = int(frame.shape[0]/scale_factor)
         dim = (width, height)
         frame= cv2.resize(frame, dim)
-    
-   
-        #pt = (200,600)
-        
-    
-        if (i<length):
+          
+       if (i<length):
             pt = (int((COM_smooth[i][0])/scale_factor), int((COM_smooth[i][1])/scale_factor))
             frm = cv2.circle(frame, pt, 10, (255, 0, 0), -1)
             i=i+1
@@ -365,7 +271,4 @@ ax2.invert_yaxis()
 ax1.set_title('COM tracking before smoothing')
 ax2.set_title('COM tracking after smoothing')
 
-#x, y = zip(*COM_smooth)
-#plt.scatter(x, y, None, None, ".")
 plt.show() 
-"""
