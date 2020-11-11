@@ -9,3 +9,6 @@ The scripts included are as follows:
 * **get_averages.m** calculates the average velocity, acceleration and power of the CoM trajectory
 * **vel_acc_covariance.m** calculates and plots the covariance values for velocity and acceleration
 * **pwr_covariance.m** calculates and plots the covariance values for power
+
+### Prerequisites:
+The Python programs require the OpenCV library to be installed.
